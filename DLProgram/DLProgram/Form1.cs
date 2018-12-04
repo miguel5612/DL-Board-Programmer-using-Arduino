@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using System.Data;
 
 namespace DLProgram
 {
@@ -21,6 +22,7 @@ namespace DLProgram
             fillPortListe();
             //fillBaudRate: Con esta funcion se llena los baudrate
             fillBaudRate();
+            fillRoute();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -89,10 +91,38 @@ namespace DLProgram
             }
             ddPorts.SelectedIndex = 0;
         }
-
+        private void fillRoute()
+        {
+            var path = Environment.CurrentDirectory;
+            txtRoute.Text = path + "\\app.exe";
+        }
         private void ddBaudRate_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            //fillPortListe: Con esta funcion se llena la lista de puertos que se puede seleccionar en el DropDown
+            fillPortListe();
+            //fillBaudRate: Con esta funcion se llena los baudrate
+            fillBaudRate();
+        }
+
+        private void btnReadFile_Click(object sender, EventArgs e)
+        {
+            var path = Environment.CurrentDirectory + "\\app.exe";
+            if( )
         }
     }
 }
