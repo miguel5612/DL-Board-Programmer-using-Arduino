@@ -96,7 +96,7 @@
             this.txtExe.Location = new System.Drawing.Point(32, 189);
             this.txtExe.Multiline = true;
             this.txtExe.Name = "txtExe";
-            this.txtExe.Size = new System.Drawing.Size(296, 338);
+            this.txtExe.Size = new System.Drawing.Size(338, 544);
             this.txtExe.TabIndex = 5;
             this.txtExe.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -105,7 +105,7 @@
             this.txtMod.Location = new System.Drawing.Point(417, 189);
             this.txtMod.Multiline = true;
             this.txtMod.Name = "txtMod";
-            this.txtMod.Size = new System.Drawing.Size(296, 338);
+            this.txtMod.Size = new System.Drawing.Size(327, 544);
             this.txtMod.TabIndex = 6;
             // 
             // lblExe

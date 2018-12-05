@@ -124,47 +124,48 @@ namespace DLProgram
 
         private void btnReadFile_Click(object sender, EventArgs e)
         {
-            float aspectRatio;
-            string tempDirectory = "";
-            int autoSaveTime;
-            bool showStatusBar;
             var path = Environment.CurrentDirectory + "\\app.exe";
             OpenFileDialog window = new OpenFileDialog();
             string line = "", text = "";
-            if(window.ShowDialog() == DialogResult.OK)
+            if (window.ShowDialog() == DialogResult.OK)
             {
-                //FileStream stream = File.OpenRead(window.FileName);
-                //stream.Seek(0x83C410, SeekOrigin.Begin);
-                string txt = "";
-                //NumberFormatInfo nfi = System.Globalization.NumberStyles.HexNumber;
-                using (BinaryReader br = new BinaryReader(File.Open(window.FileName, FileMode.Open)))
-                {
-                    //StringBuilder hex = new StringBuilder(br.length * 2);
-                    //hex.AppendFormat("{0:x2}", b);
-                    aspectRatio = br.ReadSingle();
-                    tempDirectory += string.Format("X2", br.ReadString());
-                    autoSaveTime = br.ReadInt32();
-                    showStatusBar = br.ReadBoolean();
-                    //txt += br.ReadString();
-                }                    
-              
-                byte[] bufferArray = File.ReadAllBytes(window.FileName);
-                string base64EncodedString = Convert.ToBase64String(bufferArray);
-                bufferArray = Convert.FromBase64String(base64EncodedString);
-                StreamReader sr = new StreamReader(window.FileName);
-                while(line!=null)
-                {
-                    line = sr.ReadLine();
-                    if(line!=null)
-                    {
-                        text += line;
-                    }
-                }
-                sr.Close();
-                txtExe.Text = System.Text.Encoding.Default.GetString(bufferArray);
+                string fileStr = "";
+                string location = window.FileName;
+                byte[] file = File.ReadAllBytes(location);
+                fileStr = ByteArrayToString(file);
+                fileStr = formatStr(fileStr,4,8);        
+                txtExe.Text = fileStr;
             }
-            //if( )
 
         }
+        public static string ByteArrayToString(byte[] ba)
+        {
+            StringBuilder hex = new StringBuilder(ba.Length * 2);
+            foreach (byte b in ba)
+                hex.AppendFormat("{0:x2}", b);
+            return hex.ToString();
+        }
+        public static string formatStr(String inputText, int chunkSize, int CRSize)
+        {
+            string rText = " ";
+            int counter = 0;
+           foreach(string s in Split(inputText, chunkSize).ToList())
+            {
+                counter++;
+                rText +=" " + s;
+                if (counter >= CRSize)
+                {
+                    rText += "  \r\n ";
+                    counter = 0;
+                }
+            }
+            return rText;
+        }
+        static IEnumerable<string> Split(string str, int chunkSize)
+        {
+            return Enumerable.Range(0, str.Length / chunkSize)
+                .Select(i => str.Substring(i * chunkSize, chunkSize));
+        }
     }
+   
 }
