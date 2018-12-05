@@ -8,7 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
-using System.Data;
+using System.IO;
+using System.Globalization;
+using System.Text;
+
 
 namespace DLProgram
 {
@@ -121,8 +124,47 @@ namespace DLProgram
 
         private void btnReadFile_Click(object sender, EventArgs e)
         {
+            float aspectRatio;
+            string tempDirectory = "";
+            int autoSaveTime;
+            bool showStatusBar;
             var path = Environment.CurrentDirectory + "\\app.exe";
-            if( )
+            OpenFileDialog window = new OpenFileDialog();
+            string line = "", text = "";
+            if(window.ShowDialog() == DialogResult.OK)
+            {
+                //FileStream stream = File.OpenRead(window.FileName);
+                //stream.Seek(0x83C410, SeekOrigin.Begin);
+                string txt = "";
+                //NumberFormatInfo nfi = System.Globalization.NumberStyles.HexNumber;
+                using (BinaryReader br = new BinaryReader(File.Open(window.FileName, FileMode.Open)))
+                {
+                    //StringBuilder hex = new StringBuilder(br.length * 2);
+                    //hex.AppendFormat("{0:x2}", b);
+                    aspectRatio = br.ReadSingle();
+                    tempDirectory += string.Format("X2", br.ReadString());
+                    autoSaveTime = br.ReadInt32();
+                    showStatusBar = br.ReadBoolean();
+                    //txt += br.ReadString();
+                }                    
+              
+                byte[] bufferArray = File.ReadAllBytes(window.FileName);
+                string base64EncodedString = Convert.ToBase64String(bufferArray);
+                bufferArray = Convert.FromBase64String(base64EncodedString);
+                StreamReader sr = new StreamReader(window.FileName);
+                while(line!=null)
+                {
+                    line = sr.ReadLine();
+                    if(line!=null)
+                    {
+                        text += line;
+                    }
+                }
+                sr.Close();
+                txtExe.Text = System.Text.Encoding.Default.GetString(bufferArray);
+            }
+            //if( )
+
         }
     }
 }

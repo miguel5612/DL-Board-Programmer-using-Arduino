@@ -33,10 +33,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ddBaudRate = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.txtExe = new System.Windows.Forms.TextBox();
+            this.txtMod = new System.Windows.Forms.TextBox();
+            this.lblExe = new System.Windows.Forms.Label();
+            this.lblMExe = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.txtRoute = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -91,41 +91,41 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "BaudRate";
             // 
-            // textBox1
+            // txtExe
             // 
-            this.textBox1.Location = new System.Drawing.Point(32, 189);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(296, 338);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txtExe.Location = new System.Drawing.Point(32, 189);
+            this.txtExe.Multiline = true;
+            this.txtExe.Name = "txtExe";
+            this.txtExe.Size = new System.Drawing.Size(296, 338);
+            this.txtExe.TabIndex = 5;
+            this.txtExe.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // textBox2
+            // txtMod
             // 
-            this.textBox2.Location = new System.Drawing.Point(417, 189);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(296, 338);
-            this.textBox2.TabIndex = 6;
+            this.txtMod.Location = new System.Drawing.Point(417, 189);
+            this.txtMod.Multiline = true;
+            this.txtMod.Name = "txtMod";
+            this.txtMod.Size = new System.Drawing.Size(296, 338);
+            this.txtMod.TabIndex = 6;
             // 
-            // label3
+            // lblExe
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(29, 173);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "EXE Leido";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.lblExe.AutoSize = true;
+            this.lblExe.Location = new System.Drawing.Point(29, 173);
+            this.lblExe.Name = "lblExe";
+            this.lblExe.Size = new System.Drawing.Size(57, 13);
+            this.lblExe.TabIndex = 7;
+            this.lblExe.Text = "EXE Leido";
+            this.lblExe.Click += new System.EventHandler(this.label3_Click);
             // 
-            // label4
+            // lblMExe
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(414, 173);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "EXE Modificado";
+            this.lblMExe.AutoSize = true;
+            this.lblMExe.Location = new System.Drawing.Point(414, 173);
+            this.lblMExe.Name = "lblMExe";
+            this.lblMExe.Size = new System.Drawing.Size(83, 13);
+            this.lblMExe.TabIndex = 8;
+            this.lblMExe.Text = "EXE Modificado";
             // 
             // button1
             // 
@@ -182,10 +182,10 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtRoute);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.lblMExe);
+            this.Controls.Add(this.lblExe);
+            this.Controls.Add(this.txtMod);
+            this.Controls.Add(this.txtExe);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.ddBaudRate);
             this.Controls.Add(this.label1);
@@ -205,10 +205,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox ddBaudRate;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtExe;
+        private System.Windows.Forms.TextBox txtMod;
+        private System.Windows.Forms.Label lblExe;
+        private System.Windows.Forms.Label lblMExe;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox txtRoute;
         private System.Windows.Forms.Label label5;
