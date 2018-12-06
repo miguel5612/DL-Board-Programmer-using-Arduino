@@ -8,7 +8,7 @@ el programa que hemos presentado que ha sido desarrollado en c#.
 Como compilar:
 -------------------
 Una vez instalado E24 IDE debes mirar que en la carpeta existe un programa llamado
-MASM.EXE y LINK.EXE.
+MASM.EXE y LINK.EXE (Tambien estan en el folder E24).
 1. Copiar el folder E24 a c:// (Windows).
 2. Abrir [Dos Box](https://www.dosbox.com/).
 3. Montar [c://E24](https://www.dosbox.com/wiki/MOUNT).
