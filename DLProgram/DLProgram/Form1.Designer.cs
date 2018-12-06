@@ -42,6 +42,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnReadFile = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtNumBytes = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.cmbSendMode = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnConnect
@@ -57,7 +61,7 @@
             // ddPorts
             // 
             this.ddPorts.FormattingEnabled = true;
-            this.ddPorts.Location = new System.Drawing.Point(100, 34);
+            this.ddPorts.Location = new System.Drawing.Point(120, 34);
             this.ddPorts.Name = "ddPorts";
             this.ddPorts.Size = new System.Drawing.Size(121, 21);
             this.ddPorts.TabIndex = 1;
@@ -76,7 +80,7 @@
             // ddBaudRate
             // 
             this.ddBaudRate.FormattingEnabled = true;
-            this.ddBaudRate.Location = new System.Drawing.Point(357, 33);
+            this.ddBaudRate.Location = new System.Drawing.Point(347, 32);
             this.ddBaudRate.Name = "ddBaudRate";
             this.ddBaudRate.Size = new System.Drawing.Size(121, 21);
             this.ddBaudRate.TabIndex = 3;
@@ -85,7 +89,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(273, 37);
+            this.label2.Location = new System.Drawing.Point(269, 38);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 4;
@@ -123,15 +127,15 @@
             this.lblMExe.AutoSize = true;
             this.lblMExe.Location = new System.Drawing.Point(414, 173);
             this.lblMExe.Name = "lblMExe";
-            this.lblMExe.Size = new System.Drawing.Size(83, 13);
+            this.lblMExe.Size = new System.Drawing.Size(138, 13);
             this.lblMExe.TabIndex = 8;
-            this.lblMExe.Text = "EXE Modificado";
+            this.lblMExe.Text = "Datos escritos en el arduino";
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(580, 33);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(115, 23);
+            this.button1.Size = new System.Drawing.Size(133, 23);
             this.button1.TabIndex = 9;
             this.button1.Text = "Actualizar puertos";
             this.button1.UseVisualStyleBackColor = true;
@@ -141,7 +145,7 @@
             // 
             this.txtRoute.Location = new System.Drawing.Point(120, 80);
             this.txtRoute.Name = "txtRoute";
-            this.txtRoute.Size = new System.Drawing.Size(575, 20);
+            this.txtRoute.Size = new System.Drawing.Size(593, 20);
             this.txtRoute.TabIndex = 10;
             // 
             // label5
@@ -155,7 +159,7 @@
             // 
             // btnReadFile
             // 
-            this.btnReadFile.Location = new System.Drawing.Point(101, 121);
+            this.btnReadFile.Location = new System.Drawing.Point(121, 121);
             this.btnReadFile.Name = "btnReadFile";
             this.btnReadFile.Size = new System.Drawing.Size(120, 31);
             this.btnReadFile.TabIndex = 12;
@@ -166,17 +170,56 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(39, 130);
+            this.label6.Location = new System.Drawing.Point(29, 130);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 13);
             this.label6.TabIndex = 13;
             this.label6.Text = "Proceso";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(269, 130);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(121, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "# de bytes del programa";
+            // 
+            // txtNumBytes
+            // 
+            this.txtNumBytes.Location = new System.Drawing.Point(395, 123);
+            this.txtNumBytes.Name = "txtNumBytes";
+            this.txtNumBytes.Size = new System.Drawing.Size(73, 20);
+            this.txtNumBytes.TabIndex = 15;
+            this.txtNumBytes.Text = "0";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(619, 120);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(94, 23);
+            this.button2.TabIndex = 16;
+            this.button2.Text = "Programar tarjeta";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // cmbSendMode
+            // 
+            this.cmbSendMode.FormattingEnabled = true;
+            this.cmbSendMode.Location = new System.Drawing.Point(474, 123);
+            this.cmbSendMode.Name = "cmbSendMode";
+            this.cmbSendMode.Size = new System.Drawing.Size(139, 21);
+            this.cmbSendMode.TabIndex = 17;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(773, 768);
+            this.Controls.Add(this.cmbSendMode);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.txtNumBytes);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnReadFile);
             this.Controls.Add(this.label5);
@@ -214,6 +257,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnReadFile;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtNumBytes;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox cmbSendMode;
     }
 }
 
