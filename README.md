@@ -1,8 +1,7 @@
 DL-Board-Programmer-using-Arduino.
 ==========
 
-Las board De-Lorenzo existentes en la universidad Francisco de Paula Santander
-en este momento no cuentan con un software para programarlas.
+Las board De-Lorenzo que se utilizan en la universidad Francisco de Paula Santander no cuentan con un software para programarlas.
 El software que se usaba antes era E24-IDE pero apartir de ahora se va a emplear
 el programa que hemos presentado que ha sido desarrollado en c#.
 
@@ -16,8 +15,8 @@ MASM.EXE y LINK.EXE.
 4. Entrar al drive montado (Ejemplo: D:).
 5. Ejecutar MASM (Escribes en la consola MASM y presionas enter).
 6. Compilar (Escribes 5 veces el nombre del programa a compilar (Debe ser un archivo .asm en c://E24)).
-7. Generar el .exe (Escribe LINK NombrePrograma; y presionas enter)
-8. Abrir el programa presentado aqui (Debes instalar primero el .zip)
+7. Generar el .exe (Escribe LINK NombrePrograma; y presionas enter).
+8. Abrir el programa presentado aqui (Debes instalar primero el .zip).
 9. Seleccionar el puerto, la velocidad y conectar.
 10. Presionar programar.
 
