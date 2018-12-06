@@ -21,11 +21,11 @@ namespace DLProgram
         public Form1()
         {
             InitializeComponent();
+            panelBack.BackColor = Color.Red;
             //fillPortListe: Con esta funcion se llena la lista de puertos que se puede seleccionar en el DropDown
             fillPortListe();
             //fillBaudRate: Con esta funcion se llena los baudrate
             fillBaudRate();
-            fillRoute();
             pfillSendMode();
         }
 
@@ -80,16 +80,21 @@ namespace DLProgram
         }
         private void fillBaudRate()
         {
+            ddBaudRate.Items.Add("4800");
             ddBaudRate.Items.Add("9600");
+            ddBaudRate.Items.Add("19200");
+            ddBaudRate.Items.Add("38400");
             ddBaudRate.Items.Add("57600");
             ddBaudRate.Items.Add("115200");
             ddBaudRate.Items.Add("250000");
-            ddBaudRate.SelectedIndex = 0;
+            ddBaudRate.SelectedIndex = 5;
         }
         private void pfillSendMode()
         {
             cmbSendMode.Items.Add("Byte-Byte (DEC)");
             cmbSendMode.Items.Add("Byte-Byte (HEX)");
+            cmbSendMode.Items.Add("2 byte-2 byte (DEC)");
+            cmbSendMode.Items.Add("2 byte-2 byte (HEX)");
             cmbSendMode.Items.Add("4 byte-4 byte (DEC)");
             cmbSendMode.Items.Add("4 byte-4 byte (HEX)");
             cmbSendMode.Items.Add("Line-Line (32-Bit)(DEC)");
@@ -102,17 +107,15 @@ namespace DLProgram
         }
         private void fillPortListe()
         {
-            ddPorts.Items.Add("COM3");
+            var countPorts = 0;
+            ddPorts.Items.Clear();
             foreach (String port in SerialPort.GetPortNames())
             {
                 ddPorts.Items.Add(port);
+                countPorts++;
             }
+            if(countPorts==0) ddPorts.Items.Add("COM3");
             ddPorts.SelectedIndex = 0;
-        }
-        private void fillRoute()
-        {
-            var path = Environment.CurrentDirectory;
-            txtRoute.Text = path + "\\app.exe";
         }
         private void ddBaudRate_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -185,174 +188,274 @@ namespace DLProgram
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (txtExe.Text != "")
+            pbLoad.Value = 0;
+            pbLoad.Maximum = 100;
+            Cursor.Current = Cursors.WaitCursor;
+            try
             {
-                txtMod.Text = "";
-                char sep = '\r';
-                //Voy a enviar caracter por caractercmbSendMode.Items.Add("Byte-Byte (DEC)");
-                if (cmbSendMode.Text == "Byte-Byte (DEC)")
+                if (txtExe.Text != "")
                 {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
-                    for (int i = 0; i <= text.Length - 1; i++)
+                    txtMod.Text = "";
+                    char sep = '\r';
+                    int milliseconds = 10;
+                    //Voy a enviar caracter por caractercmbSendMode.Items.Add("Byte-Byte (DEC)");
+                    if (cmbSendMode.Text == "Byte-Byte (DEC)")
                     {
-                        string character = text.Substring(i, 1);
-                        int caracter = int.Parse(character, System.Globalization.NumberStyles.HexNumber);
-                        ArduinoPort.WriteLine(caracter.ToString());
-                        txtMod.Text += caracter.ToString() + "\r\n";
-                    }
-                }
-                else if (cmbSendMode.Text == "Byte-Byte (HEX)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
-                    for (int i = 0; i <= text.Length - 1; i++)
-                    {
-                        string character = text.Substring(i, 1);
-                        ArduinoPort.WriteLine(character);
-                        txtMod.Text += character + "\r\n";
-                    }
-                }
-                else if (cmbSendMode.Text == "4 byte-4 byte (DEC)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
-                    for (int i = 0; i <= text.Length - 1; i += 4)
-                    {
-                        string character = text.Substring(i, 4);
-                        string lineInt = "";
-                        for(int bIndex = 0; bIndex <= character.Length -1; bIndex++)
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
+                        for (int i = 0; i <= text.Length - 1; i++)
                         {
-                            int caracter = int.Parse(character.Substring(bIndex,1), System.Globalization.NumberStyles.HexNumber);
-                            lineInt += caracter.ToString();
+                            string character = text.Substring(i, 1);
+                            int caracter = int.Parse(character, System.Globalization.NumberStyles.HexNumber);
+                            ArduinoPort.WriteLine(caracter.ToString());
+                            txtMod.Text += caracter.ToString() + "\r\n";
+                            txtMod.ScrollToCaret();
+                            pbLoad.Value = (i/text.Length)*100;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
                         }
-                        ArduinoPort.WriteLine(lineInt);
-                        txtMod.Text += lineInt + "\r\n";
                     }
-                }
-                else if (cmbSendMode.Text == "4 byte-4 byte (HEX)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
-                    for (int i = 0; i <= text.Length - 1; i += 4)
+                    else if (cmbSendMode.Text == "Byte-Byte (HEX)")
                     {
-                        string character = text.Substring(i, 4);
-                        ArduinoPort.WriteLine(character);
-                        txtMod.Text += character + "\r\n";
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
+                        for (int i = 0; i <= text.Length - 1; i += 1)
+                        {
+                            string character = text.Substring(i, 1);
+                            ArduinoPort.WriteLine(character);
+                            txtMod.Text += character + "\r\n";
+                            txtMod.ScrollToCaret();
+                            pbLoad.Value = (i / text.Length) * 100;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                        }
                     }
-                }
+                    else if (cmbSendMode.Text == "2 byte-2 byte (HEX)")
+                    {
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
+                        for (int i = 0; i <= text.Length - 2; i+=2)
+                        {
+                            string character = text.Substring(i, 2);
+                            int caracter = int.Parse(character, System.Globalization.NumberStyles.HexNumber);
+                            ArduinoPort.WriteLine(caracter.ToString());
+                            txtMod.Text += character + "\r\n";
+                            txtMod.ScrollToCaret();
+                            pbLoad.Value = (i / text.Length) * 100;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                        }
+                    }
 
-                else if (cmbSendMode.Text == "Line-Line (32-Bit)(DEC)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
-                    string[] lines = text.Split(sep);
-                    foreach (string line in lines)
+                    
+                    else if (cmbSendMode.Text == "2 byte-2 byte (DEC)")
                     {
-                        string lineF = line.Replace("\r", "");
-                        string lineInt = "";
-                        for (int i = 0; i <= lineF.Length - 1; i++)
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
+                        for (int i = 0; i <= text.Length - 1; i += 2)
                         {
-                            lineInt += int.Parse(lineF.Substring(i, 1), System.Globalization.NumberStyles.HexNumber);
-                        }
-                        ArduinoPort.WriteLine(lineInt);
-                        txtMod.Text += lineInt + "\r\n";
-                    }
-                }
-                else if (cmbSendMode.Text == "Line-Line (32-Bit)(HEX)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
-                    string[] lines = text.Split(sep);
-                    foreach (string line in lines)
-                    {
-                        string lineF = line.Replace("\r", "");
-                        ArduinoPort.WriteLine(lineF);
-                        txtMod.Text += lineF + "\r\n";
-                    }
-                }
-                else if (cmbSendMode.Text == "Line-Line (16-Bit)(DEC)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
-                    string[] lines = text.Split(sep);
-                    foreach (string line in lines)
-                    {
-                        string lineF = line.Replace("\r", "");
-                        for (int j = 0; j <= lineF.Length - 1; j += lineF.Length / 2)
-                        {
-                            string line16 = lineF.Substring(j, 16);
+                            string character = text.Substring(i, 2);
                             string lineInt = "";
-                            for (int i = 0; i <= line16.Length - 1; i++)
+                            for (int bIndex = 0; bIndex <= character.Length - 1; bIndex++)
                             {
-                                lineInt += int.Parse(line16.Substring(i, 1), System.Globalization.NumberStyles.HexNumber);
+                                int caracter = int.Parse(character.Substring(bIndex, 1), System.Globalization.NumberStyles.HexNumber);
+                                lineInt += caracter.ToString();
                             }
                             ArduinoPort.WriteLine(lineInt);
                             txtMod.Text += lineInt + "\r\n";
+                            txtMod.ScrollToCaret();
+                            pbLoad.Value = (i / text.Length) * 100;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
                         }
                     }
-                }
-                else if (cmbSendMode.Text == "Line-Line (16-Bit)(HEX)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
-                    string[] lines = text.Split(sep);
-                    foreach (string line in lines)
+
+                    else if (cmbSendMode.Text == "4 byte-4 byte (DEC)")
                     {
-                        string lineF = line.Replace("\r", "");
-                        for (int j = 0; j <= lineF.Length - 1; j += lineF.Length / 2)
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
+                        for (int i = 0; i <= text.Length - 1; i += 4)
                         {
-                            string line16 = lineF.Substring(j, 16);
-                            ArduinoPort.WriteLine(line16);
-                            txtMod.Text += line16 + "\r\n";
-                        }
-                    }
-                }
-                else if (cmbSendMode.Text == "Line-Line (8-Bit)(DEC)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
-                    string[] lines = text.Split(sep);
-                    foreach (string line in lines)
-                    {
-                        string lineF = line.Replace("\r", "");
-                        for (int j = 0; j <= lineF.Length - 1; j += lineF.Length / 4)
-                        {
-                            string line8 = lineF.Substring(j, 8);
+                            string character = text.Substring(i, 4);
                             string lineInt = "";
-                            for (int i = 0; i <= line8.Length - 1; i++)
+                            for (int bIndex = 0; bIndex <= character.Length - 1; bIndex++)
                             {
-                                lineInt += int.Parse(line8.Substring(i, 1), System.Globalization.NumberStyles.HexNumber);
+                                int caracter = int.Parse(character.Substring(bIndex, 1), System.Globalization.NumberStyles.HexNumber);
+                                lineInt += caracter.ToString();
                             }
                             ArduinoPort.WriteLine(lineInt);
                             txtMod.Text += lineInt + "\r\n";
+                            txtMod.ScrollToCaret();
+                            pbLoad.Value = (i / text.Length) * 100;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
                         }
                     }
-                }
-                else if (cmbSendMode.Text == "Line-Line (8-Bit)(HEX)")
-                {
-                    string text = txtExe.Text;
-                    text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
-                    string[] lines = text.Split(sep);
-                    foreach (string line in lines)
+                    else if (cmbSendMode.Text == "4 byte-4 byte (HEX)")
                     {
-                        string lineF = line.Replace("\r", "");
-                        for (int j = 0; j <= lineF.Length - 1; j += lineF.Length / 4)
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\r\n", ""); //remove whitespaces
+                        for (int i = 0; i <= text.Length - 4; i += 4)
                         {
-                            string line8 = lineF.Substring(j, 8);
-                            ArduinoPort.WriteLine(line8);
-                            txtMod.Text += line8 + "\r\n";
+                            string character = text.Substring(i, 4);
+                            ArduinoPort.WriteLine(character);
+                            txtMod.Text += character + "\r\n";
+                            txtMod.ScrollToCaret();
+                            pbLoad.Value = (i / text.Length) * 100;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
                         }
                     }
+
+                    else if (cmbSendMode.Text == "Line-Line (32-Bit)(DEC)")
+                    {
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
+                        string[] lines = text.Split(sep);
+                        int j = 0;
+                        foreach (string line in lines)
+                        {
+                            string lineF = line.Replace("\r", "");
+                            string lineInt = "";
+                            for (int i = 0; i <= lineF.Length - 1; i++)
+                            {
+                                lineInt += int.Parse(lineF.Substring(i, 1), System.Globalization.NumberStyles.HexNumber);
+                            }
+                            ArduinoPort.WriteLine(lineInt);
+                            txtMod.Text += lineInt + "\r\n";
+                            txtMod.ScrollToCaret();
+                            j = j + 10;
+                            pbLoad.Value = j / text.Length;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                        }
+                    }
+                    else if (cmbSendMode.Text == "Line-Line (32-Bit)(HEX)")
+                    {
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
+                        string[] lines = text.Split(sep);
+                        int j = 0;
+                        foreach (string line in lines)
+                        {
+                            string lineF = line.Replace("\r", "");
+                            ArduinoPort.WriteLine(lineF);
+                            txtMod.Text += lineF + "\r\n";
+                            txtMod.ScrollToCaret();
+                            j = j + 10;
+                            pbLoad.Value = j / text.Length;
+                            Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                        }
+                    }
+                    else if (cmbSendMode.Text == "Line-Line (16-Bit)(DEC)")
+                    {
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
+                        string[] lines = text.Split(sep);
+                        foreach (string line in lines)
+                        {
+                            string lineF = line.Replace("\r", "");
+                            for (int j = 0; j <= lineF.Length - 16; j += lineF.Length / 2)
+                            {
+                                string line16 = lineF.Substring(j, 16);
+                                string lineInt = "";
+                                for (int i = 0; i <= line16.Length - 1; i++)
+                                {
+                                    lineInt += int.Parse(line16.Substring(i, 1), System.Globalization.NumberStyles.HexNumber);
+                                }
+                                ArduinoPort.WriteLine(lineInt);
+                                txtMod.Text += lineInt + "\r\n";
+                                txtMod.ScrollToCaret();
+                                pbLoad.Value = j / text.Length;
+                                Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                            }
+                        }
+                    }
+                    else if (cmbSendMode.Text == "Line-Line (16-Bit)(HEX)")
+                    {
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
+                        string[] lines = text.Split(sep);
+                        foreach (string line in lines)
+                        {
+                            string lineF = line.Replace("\r", "");
+                            for (int j = 0; j <= lineF.Length - 16; j += lineF.Length / 2)
+                            {
+                                string line16 = lineF.Substring(j, 16);
+                                ArduinoPort.WriteLine(line16);
+                                txtMod.Text += line16 + "\r\n";
+                                txtMod.ScrollToCaret();
+                                pbLoad.Value = j / text.Length;
+                                Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                            }
+                        }
+                    }
+                    else if (cmbSendMode.Text == "Line-Line (8-Bit)(DEC)")
+                    {
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
+                        string[] lines = text.Split(sep);
+                        foreach (string line in lines)
+                        {
+                            string lineF = line.Replace("\r", "");
+                            for (int j = 0; j <= lineF.Length -8; j += lineF.Length / 4)
+                            {
+                                string line8 = lineF.Substring(j, 8);
+                                string lineInt = "";
+                                for (int i = 0; i <= line8.Length - 1; i++)
+                                {
+                                    lineInt += int.Parse(line8.Substring(i, 1), System.Globalization.NumberStyles.HexNumber);
+                                }
+                                ArduinoPort.WriteLine(lineInt);
+                                txtMod.Text += lineInt + "\r\n";
+                                txtMod.ScrollToCaret();
+                                pbLoad.Value = j / text.Length;
+                                Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                            }
+                        }
+                    }
+                    else if (cmbSendMode.Text == "Line-Line (8-Bit)(HEX)")
+                    {
+                        string text = txtExe.Text;
+                        text = text.Trim().Replace(" ", "").Replace("\n", ""); //remove whitespaces
+                        string[] lines = text.Split(sep);
+                        foreach (string line in lines)
+                        {
+                            string lineF = line.Replace("\r", "");
+                            for (int j = 0; j <= lineF.Length - 8; j += lineF.Length / 4)
+                            {
+                                string line8 = lineF.Substring(j, 8);
+                                ArduinoPort.WriteLine(line8);
+                                txtMod.Text += line8 + "\r\n";
+                                txtMod.ScrollToCaret();
+                                pbLoad.Value = j / text.Length;
+                                Task.Delay(TimeSpan.FromMilliseconds(milliseconds)).Wait();
+                            }
+                        }
+                    }
+                    pbLoad.Value = 100;
+                }
+                else
+                {
+                    Form dlg1 = new Form();
+                    dlg1.Text = "Debes cargar por lo menos un archivo .Exe";
+                    dlg1.Visible = true;
                 }
 
             }
-            else
+            catch (Exception ex)
             {
-                Form dlg1 = new Form();
-                dlg1.Text = "Debes cargar por lo menos un archivo .Exe";
-                dlg1.Visible = true;
+                txtRoute.Text = ex.Message;
+                label5.Visible = true;
+                txtRoute.Visible = true;
             }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 
