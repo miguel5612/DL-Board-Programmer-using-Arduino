@@ -23,6 +23,9 @@ MASM.EXE y LINK.EXE (Tambien estan en el folder E24).
 requisitos:
 --------------------
 1. Computador con windows 10 y el software descargado.
+Capturas de pantalla:
+--------------------
+[Ventana principal](https://raw.githubusercontent.com/miguel5612/DL-Board-Programmer-using-Arduino/master/Ext/base.PNG)
 
 Documentacion:
 --------------------
